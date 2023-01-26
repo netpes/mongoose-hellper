@@ -1,0 +1,15 @@
+{
+  "name": "mongoose_hellper",
+  "version": "1.1.5",
+  "description": "this is mongoose helper",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "netpes",
+  "license": "ISC",
+  "dependencies": {
+    "mongoose": "^6.8.4"
+  }
+}
