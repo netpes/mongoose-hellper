@@ -1,4 +1,5 @@
-
+const mongoose = require("mongoose");
+const {Schema} = require("mongoose");
 
 module.exports = {
     InsertVerify:(schema,dataobject,identifier)=>{
@@ -195,5 +196,59 @@ module.exports = {
         }catch (err){
             return err
         }
+    },
+    ConnectToDb: (url)=>{
+        mongoose.set("strictQuery", true);
+        try {
+            mongoose?.connect(url, {
+                useNewUrlParser: true,
+                useUnifiedTopology: true,
+            });
+        } catch (err){
+            return err
+        }
+        try {
+            mongoose?.connection.on("connected", () => {
+                console.log("connected");
+                return "connected"
+            });
+        } catch (err){
+            return err
+        }
+
+    },
+    CreateSchema: (documentName, schemainfo)=>{
+        try {
+        const schema = mongoose.Schema(schemainfo)
+            return mongoose.model(documentName,schema)
+        } catch (err){
+            return err
+        }
+    },
+    //refs fields, need to recive [names] for the refs
+    PopulateSingle: (firstSchemaName,firstSchemaFields,firstSchema_Ref_Field,SecondSchemaName,SecondSchemaFields, secondSchema_Ref_Field)=>{
+        try {
+            firstSchema_Ref_Field.forEach((name)=> {
+                firstSchemaFields[name].ref = SecondSchemaName;
+            })
+            const schema1 = mongoose.Schema(firstSchemaFields);
+            secondSchema_Ref_Field.forEach((name)=> {
+                SecondSchemaFields[name].ref = firstSchemaName;
+                SecondSchemaFields[name].type= Schema.Types.ObjectId;
+            })
+            const schema2 = mongoose.Schema(SecondSchemaFields)
+            return {model1:mongoose.model(firstSchemaName, schema1), model2:mongoose.model(SecondSchemaName, schema2)}
+        } catch(err){
+            console.log(err)
+            return err
+        }
+    },
+    PopulatePrint: (chema2pop,schema2, schema2Find)=>{
+        return schema2.findOne(schema2Find).
+        populate(chema2pop).then((rs)=>{
+            return rs
+        })
     }
 }
+
+
