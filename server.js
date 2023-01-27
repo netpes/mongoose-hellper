@@ -18,13 +18,15 @@ mon.ConnectToDb("mongodb+srv://netpes:netpes@cluster0.cnxmrap.mongodb.net/?retry
     console.log(tt);
         const model1 =await  tt.model1
         const model2 =await tt.model2
-        let that;
+        // let that;
         // console.log(model1.toString())
-        that = await mon.PopulatePrint("auther", model2, {books: "h1"});
+        // that = await mon.PopulatePrint("auther", model2, {books: "h1"});
 //not working
         console.log(that)
         // const enter1 = mon.GodlessVerify(model1, {name:"hey1",password:"dfasdf"})
         // const enter2 =await  mon.GodlessVerify(model2, {books:"h1",auther:'63d284def25e08f469836e1d'})
+        const printme =await mon.PopulateInsertWithOutId(model1, {name:"hey1"}, model2, {books:"test", auther: null}, "auther")
+        console.log(printme)
 }
 
 

@@ -248,6 +248,22 @@ module.exports = {
         populate(chema2pop).then((rs)=>{
             return rs
         })
+    },
+    //first schema its the schema that populate the second schema
+    PopulateInsertWithOutId:async (firstSchema,firstSchemaidentifier, SecondSchema, SecondSchemaFields, secondSchemaReftoFirst)=> {
+        try {
+            const thefirstSchema = await firstSchema.findOne(firstSchemaidentifier);
+             SecondSchemaFields[secondSchemaReftoFirst] = thefirstSchema._id
+            const secondSchema  = new SecondSchema(SecondSchemaFields)
+            return secondSchema.save().then((res)=>{
+                if (res){
+                    return {message:"saved", body: SecondSchemaFields}
+                }
+            })
+
+        } catch (err){
+            return err
+        }
     }
 }
 
